@@ -7,6 +7,7 @@ local.properties
 
 # Log/OS Files
 *.log
+.DS_Store
 
 # Android Studio generated files and folders
 captures/
@@ -24,7 +25,6 @@ render.experimental.xml
 
 # Keystore files
 *.jks
-*.keystore
 
 # Google Services (e.g. APIs or Firebase)
 google-services.json

@@ -47,6 +47,13 @@ jobs:
         echo "ARM64_APK_SHA256=$(sha256sum app/build/outputs/apk/debug/*-arm64-v8a-debug.apk | awk '{ print $1 }')" >> $GITHUB_ENV
         echo "X86_64_APK_SHA256=$(sha256sum app/build/outputs/apk/debug/*-x86_64-debug.apk | awk '{ print $1 }')" >> $GITHUB_ENV
 
+    - name: Get app version name
+      run: |
+        VERSION_NAME=$(grep -oP 'versionName\s*"\K[^"]+' app/build.gradle)
+        VERSION_CODE=$(grep -oP 'versionCode\s*\K\d+' app/build.gradle)
+        echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_ENV
+        echo "VERSION_CODE=$VERSION_CODE" >> $GITHUB_ENV
+
     - name: Upload binaries to a release
       if: ${{ github.ref == 'refs/heads/master' }}
       uses: softprops/action-gh-release@v1
@@ -59,7 +66,7 @@ jobs:
           * **x86_64**: `${{ env.X86_64_APK_SHA256 }}`
         files: |
           app/build/outputs/apk/release/*.apk
-        tag_name: "${{ github.run_number }}-${{ github.run_id }}"
+        tag_name: "v${{ env.VERSION_NAME }}-${{ env.VERSION_CODE }}"
 
     - name: Upload binaries to a pre-release
       if: ${{ github.ref == 'refs/heads/dev' }}
@@ -74,3 +81,4 @@ jobs:
         files: |
           app/build/outputs/apk/release/*.apk
         tag_name: "${{ github.run_number }}-${{ github.run_id }}"
+        prerelease: true

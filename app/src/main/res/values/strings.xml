@@ -1,0 +1,9 @@
+<resources>
+	<string name="app_name">PickVisualMedia</string>
+	<string name="clear_all">Clear all</string>
+	<string name="settings">Settings</string>
+	<string name="images_only">Show images only</string>
+	<string name="videos_only">Show videos only</string>
+	<string name="persist_files">Persist file access</string>
+	<string name="pick_multiple">Pick multiple files</string>
+</resources>

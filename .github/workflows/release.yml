@@ -74,4 +74,3 @@ jobs:
         files: |
           app/build/outputs/apk/release/*.apk
         tag_name: "${{ github.run_number }}-${{ github.run_id }}"
-        prerelease: true

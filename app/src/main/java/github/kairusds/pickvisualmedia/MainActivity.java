@@ -25,9 +25,11 @@ import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia;
 import androidx.activity.result.contract.ActivityResultContracts.PickMultipleVisualMedia;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.preference.PreferenceManager;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.behavior.HideBottomViewOnScrollBehavior;
 
 import github.kairusds.pickvisualmedia.databinding.ActivityMainBinding;
 
@@ -143,6 +145,7 @@ public class MainActivity extends AppCompatActivity{
 				mediaPlayer = null;
 				mediaView = new ImageView(this);
 				((ImageView) mediaView).setImageURI(uri);
+				((ImageView) mediaView).setAdjustViewBounds(true);
 				mediaView.setLayoutParams(new LinearLayout.LayoutParams(
 					LinearLayout.LayoutParams.MATCH_PARENT,
 					LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -192,9 +195,18 @@ public class MainActivity extends AppCompatActivity{
 				}
 				mediaContainer.removeView(mediaView);
 				mediaContainer.removeView(removeButton);
+				showFab();
 			});
 		}catch(Exception e){
 			showDialog(e.getMessage());
+		}
+	}
+
+	private void showFab(){
+		var params = (CoordinatorLayout.LayoutParams) binding.fab.getLayoutParams();
+		var behavior = (HideBottomViewOnScrollBehavior) params.getBehavior();
+		if(behavior.isScrolledDown()){
+			behavior.slideUp(binding.fab);
 		}
 	}
 
@@ -202,6 +214,7 @@ public class MainActivity extends AppCompatActivity{
 	private void showDialog(String msg){
 		var text = new AppCompatTextView(this);
 		text.setText(msg);
+		text.setTextSize(20.0f);
 		text.setTextIsSelectable(true);
 
 		new AlertDialog.Builder(this)
@@ -276,6 +289,7 @@ public class MainActivity extends AppCompatActivity{
 					}
 				}
 			}
+			showFab();
 			return true;
 		}else if(id == R.id.settings_pick_multiple){
 			preferences.edit().putBoolean("pickMultiple", item.isChecked()).apply();
